@@ -20,24 +20,6 @@ enum AccountType {
   corretoraDeInvestimentos
 }
 
-enum TransactionCategories {
-  // para saques 
-  alimentacao 
-  educacao
-  laser
-  saude
-  eletronicos
-  compras
-  beleza
-  veiculo
-  roupas
-
-  // para depósitos 
-  investimento
-  salario
-  comissao
-  outro
-}
 
 enum GoalCategory {
   fundoDeEmergencia
@@ -86,8 +68,19 @@ model Transaction {
   value       Float
   type        Type
   createdAt   DateTime              @default(now())
-  categories  TransactionCategories?
 
   account     Account               @relation(fields: [accountId], references: [id])
   accountId   String
+
+  category    Category              @relation(fields: [categoryId], references: [id])
+  categoryId  String
+}
+
+model Category{
+  id                String      @id @default(uuid())
+  name              String      @unique
+  iconId            String
+  isCustom          Boolean     @default(false)
+
+  transactionsList  Transaction[]
 }
