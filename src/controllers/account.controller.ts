@@ -1,5 +1,6 @@
 import { Body, Controller, Delete, Get, HttpException, HttpStatus, Param, Patch, Post, Put, Query, Request, UseGuards } from "@nestjs/common";
 import { get } from "http";
+import { last } from "rxjs";
 import { EntityDoesNotExistsError } from "src/errors/entityDoesNotExists.error";
 import { accounQuery } from "src/interface/account-query";
 import { AccountFilterParams } from "src/interface/dtos/account-filter";
@@ -10,6 +11,8 @@ import { accountService } from "src/services/accounts/account.service";
 
 @Controller("account")
 export class AccountController {
+    private baseUrl = `http://${process.env.API_HOST}:${process.env.API_PORT}/account`;
+
     constructor(private accountService: accountService) {} 
 
 
@@ -81,8 +84,26 @@ export class AccountController {
             return {
                 status: 200,
                 params: params,
-                meta:accounts,
-                date: new Date()
+                data:accounts,
+                meta:{
+                    maxPage: Math.ceil(accounts.length / pageSize),
+                    page: Number(page),
+                    pageSize: Number(pageSize),
+                    totalCount: accounts.length,
+                    links:{
+                        first:`${this.baseUrl}?page=1&pageSize=${pageSize}`,
+                        last:`${this.baseUrl}?page=${Math.ceil(accounts.length / pageSize)}&pageSize=${pageSize}`,
+                        next: page < Math.ceil(accounts.length / pageSize) ? `${this.baseUrl}?page=${Number(page) + 1}&pageSize=${pageSize}` : null,
+                        prev: page > 1 ? `${this.baseUrl}?page=${Number(page) - 1}&pageSize=${pageSize}` : null,
+                    }
+                },
+                date: new Date(),
+                links:{
+                    first:`${this.baseUrl}?page=1&pageSize=${pageSize}`,
+                    last:`${this.baseUrl}?page=${Math.ceil(accounts.length / pageSize)}&pageSize=${pageSize}`,
+                    next: page < Math.ceil(accounts.length / pageSize) ? `${this.baseUrl}?page=${page + 1}&pageSize=${pageSize}` : null,
+                    prev: page > 1 ? `${this.baseUrl}?page=${page - 1}&pageSize=${pageSize}` : null,
+                }
             }
         }catch(err){
             if(err instanceof EntityDoesNotExistsError) {

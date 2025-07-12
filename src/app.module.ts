@@ -8,10 +8,11 @@ import { JwtService } from '@nestjs/jwt';
 import { AuthModule } from './modules/auth/auth.module';
 import { AuthController } from './controllers/auth.controller';
 import { accountModule } from './modules/account/account.module';
+import { TransactionModule } from './modules/transaction/transaction.module';
 
 
 @Module({
-  imports: [AuthModule,accountModule],
+  imports: [AuthModule,accountModule,TransactionModule],
   controllers: [UserController],
   providers: [PrismaService,userService,
     {
