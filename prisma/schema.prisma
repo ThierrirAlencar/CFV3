@@ -31,16 +31,16 @@ enum GoalCategory {
 model User {
   id           String     @id @default(uuid())
   email        String     @unique
-  senha        String
+  password        String
   userName     String
   accountList  Account[]
   goalList     Goal[]
-  profileUrl   String?
+  imageUrl   String?
 }
 
 model Account {
   id              String        @id @default(uuid())
-  name            String
+  title            String
   value           Float         @default(0)
   description     String?
   user            User          @relation(fields: [userId], references: [id])
@@ -52,8 +52,8 @@ model Account {
 model Goal {
   id             String     @id @default(uuid())
   title          String
-  value          Float      @default(0)
-  targetedValue  Float      @default(0)
+  currentValue          Float      @default(0)
+  targetValue    Float      @default(0)
   createdAt      DateTime   @default(now())
   completedAt    DateTime?
   endTime        DateTime
@@ -78,7 +78,7 @@ model Transaction {
 
 model Category{
   id                String      @id @default(uuid())
-  name              String      @unique
+  title              String      @unique
   iconId            String
   isCustom          Boolean     @default(false)
 
