@@ -744,6 +744,477 @@ export const swaggerOptions:OpenAPIObject = {
                     }
                 }
                 }
+            },
+            "get": {
+                "tags": ["Account"],
+                "summary": "List accounts with filters",
+                "description": "Fetches a list of accounts based on optional filters (query, type, min/max value) with pagination. Requires a valid bearer token.",
+                "operationId": "listAccounts",
+                "security": [
+                {
+                    "bearerAuth": []
+                }
+                ],
+                "parameters": [
+                {
+                    "name": "query",
+                    "in": "query",
+                    "description": "Search term to filter account titles or descriptions",
+                    "required": false,
+                    "schema": {
+                    "type": "string"
+                    }
+                },
+                {
+                    "name": "type",
+                    "in": "query",
+                    "description": "Filter accounts by type",
+                    "required": false,
+                    "schema": {
+                    "type": "string"
+                    }
+                },
+                {
+                    "name": "minValue",
+                    "in": "query",
+                    "description": "Minimum value for initial balance filter",
+                    "required": false,
+                    "schema": {
+                    "type": "number",
+                    "format": "float"
+                    }
+                },
+                {
+                    "name": "maxValue",
+                    "in": "query",
+                    "description": "Maximum value for initial balance filter",
+                    "required": false,
+                    "schema": {
+                    "type": "number",
+                    "format": "float"
+                    }
+                },
+                {
+                    "name": "page",
+                    "in": "query",
+                    "description": "Page number for pagination",
+                    "required": false,
+                    "schema": {
+                    "type": "integer"
+                    }
+                },
+                {
+                    "name": "pageSize",
+                    "in": "query",
+                    "description": "Number of items per page",
+                    "required": false,
+                    "schema": {
+                    "type": "integer"
+                    }
+                }
+                ],
+                "responses": {
+                "200": {
+                    "description": "Accounts retrieved successfully",
+                    "content": {
+                    "application/json": {
+                        "schema": {
+                        "type": "object",
+                        "properties": {
+                            "status": {
+                            "type": "integer",
+                            "example": 200
+                            },
+                            "params": {
+                            "type": "object",
+                            "properties": {
+                                "query": { "type": "string" },
+                                "type": { "type": "string" },
+                                "minValue": { "type": "number", "format": "float" },
+                                "maxValue": { "type": "number", "format": "float" },
+                                "page": { "type": "integer" },
+                                "pageSize": { "type": "integer" }
+                            }
+                            },
+                            "meta": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                "title": { "type": "string" },
+                                "type": { "type": "string" },
+                                "description": { "type": "string" },
+                                "initialBalace": { "type": "number", "format": "float" }
+                                }
+                            }
+                            },
+                            "date": {
+                            "type": "string",
+                            "format": "date-time"
+                            }
+                        }
+                        }
+                    }
+                    }
+                },
+                "404": {
+                    "description": "User not found",
+                    "content": {
+                    "application/json": {
+                        "schema": {
+                        "type": "object",
+                        "properties": {
+                            "status": { "type": "integer", "example": 404 },
+                            "params": {
+                            "type": "object",
+                            "properties": {
+                                "query": { "type": "string" },
+                                "type": { "type": "string" },
+                                "minValue": { "type": "number", "format": "float" },
+                                "maxValue": { "type": "number", "format": "float" },
+                                "page": { "type": "integer" },
+                                "pageSize": { "type": "integer" }
+                            }
+                            },
+                            "error": {
+                            "type": "object",
+                            "properties": {
+                                "message": { "type": "string" },
+                                "name": { "type": "string" },
+                                "classtype": { "type": "string", "example": "ENTITYDOESNOTEXISTSERROR" }
+                            }
+                            },
+                            "date": { "type": "string", "format": "date-time" }
+                        }
+                        }
+                    }
+                    }
+                },
+                "500": {
+                    "description": "Internal server error",
+                    "content": {
+                    "application/json": {
+                        "schema": {
+                        "type": "object",
+                        "properties": {
+                            "status": { "type": "integer", "example": 500 },
+                            "params": {
+                            "type": "object",
+                            "properties": {
+                                "query": { "type": "string" },
+                                "type": { "type": "string" },
+                                "minValue": { "type": "number", "format": "float" },
+                                "maxValue": { "type": "number", "format": "float" },
+                                "page": { "type": "integer" },
+                                "pageSize": { "type": "integer" }
+                            }
+                            },
+                            "error": {
+                            "type": "object",
+                            "properties": {
+                                "message": { "type": "string" },
+                                "name": { "type": "string" },
+                                "classtype": { "type": "string", "example": "INTERNAL_SERVER_ERROR" },
+                                "class": { "type": "string" }
+                            }
+                            },
+                            "date": { "type": "string", "format": "date-time" }
+                        }
+                        }
+                    }
+                    }
+                }
+            }},
+            "delete": {
+                "tags": ["Account"],
+                "summary": "Delete an account by ID",
+                "description": "Deletes an account identified by the given ID. Returns deleted account data in the response.",
+                "operationId": "deleteAccount",
+                "parameters": [
+                    {
+                    "name": "id",
+                    "in": "path",
+                    "required": true,
+                    "description": "Unique identifier of the account",
+                    "schema": {
+                        "type": "string"
+                    }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                    "description": "Account deleted successfully",
+                    "content": {
+                        "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                            "status": {
+                                "type": "integer",
+                                "example": 200
+                            },
+                            "params": {
+                                "type": "object",
+                                "properties": {
+                                "id": { "type": "string" }
+                                }
+                            },
+                            "meta": {
+                                "type": "object",
+                                "properties": {
+                                "title": { "type": "string" },
+                                "type": { "type": "string" },
+                                "description": { "type": "string" },
+                                "initialBalace": { "type": "number", "format": "float" }
+                                }
+                            },
+                            "date": {
+                                "type": "string",
+                                "format": "date-time"
+                            }
+                            }
+                        }
+                        }
+                    }
+                    },
+                    "404": {
+                    "description": "Account not found",
+                    "content": {
+                        "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                            "status": {
+                                "type": "integer",
+                                "example": 404
+                            },
+                            "params": {
+                                "type": "object",
+                                "properties": {
+                                "id": { "type": "string" }
+                                }
+                            },
+                            "error": {
+                                "type": "object",
+                                "properties": {
+                                "message": { "type": "string" },
+                                "name": { "type": "string" },
+                                "classtype": {
+                                    "type": "string",
+                                    "example": "ENTITYDOESNOTEXISTSERROR"
+                                }
+                                }
+                            },
+                            "date": {
+                                "type": "string",
+                                "format": "date-time"
+                            }
+                            }
+                        }
+                        }
+                    }
+                    },
+                    "500": {
+                    "description": "Internal server error",
+                    "content": {
+                        "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                            "status": {
+                                "type": "integer",
+                                "example": 500
+                            },
+                            "params": {
+                                "type": "object",
+                                "properties": {
+                                "id": { "type": "string" }
+                                }
+                            },
+                            "error": {
+                                "type": "object",
+                                "properties": {
+                                "message": { "type": "string" },
+                                "name": { "type": "string" },
+                                "classtype": {
+                                    "type": "string",
+                                    "example": "INTERNAL_SERVER_ERROR"
+                                },
+                                "class": { "type": "string" }
+                                }
+                            },
+                            "date": {
+                                "type": "string",
+                                "format": "date-time"
+                            }
+                            }
+                        }
+                        }
+                    }
+                    }
+                }
+            },
+            "put": {
+                "tags": ["Account"],
+                "summary": "Update an account by ID",
+                "description": "Updates a financial account with new data provided in the request body. Returns the updated data and metadata.",
+                "operationId": "updateAccount",
+                "parameters": [
+                    {
+                    "name": "id",
+                    "in": "path",
+                    "required": true,
+                    "description": "Unique identifier of the account to update",
+                    "schema": {
+                        "type": "string"
+                    }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                    "application/json": {
+                        "schema": {
+                        "type": "object",
+                        "properties": {
+                            "title": { "type": "string" },
+                            "type": { "type": "string" },
+                            "description": { "type": "string" },
+                            "value": { "type": "number", "format": "float" }
+                        },
+                        "required": ["title", "type", "description", "value"]
+                        }
+                    }
+                    }
+                },
+                "responses": {
+                    "200": {
+                    "description": "Account updated successfully",
+                    "content": {
+                        "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                            "status": { "type": "integer", "example": 200 },
+                            "params": {
+                                "type": "object",
+                                "properties": {
+                                "id": { "type": "string" }
+                                }
+                            },
+                            "body": {
+                                "type": "object",
+                                "properties": {
+                                "title": { "type": "string" },
+                                "type": { "type": "string" },
+                                "description": { "type": "string" },
+                                "value": { "type": "number", "format": "float" }
+                                }
+                            },
+                            "meta": {
+                                "type": "object",
+                                "properties": {
+                                "title": { "type": "string" },
+                                "description": { "type": "string" }
+                                }
+                            },
+                            "date": {
+                                "type": "string",
+                                "format": "date-time"
+                            }
+                            }
+                        }
+                        }
+                    }
+                    },
+                    "404": {
+                    "description": "Account not found",
+                    "content": {
+                        "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                            "status": { "type": "integer", "example": 404 },
+                            "params": {
+                                "type": "object",
+                                "properties": {
+                                "id": { "type": "string" }
+                                }
+                            },
+                            "body": {
+                                "type": "object",
+                                "properties": {
+                                "title": { "type": "string" },
+                                "type": { "type": "string" },
+                                "description": { "type": "string" },
+                                "value": { "type": "number", "format": "float" }
+                                }
+                            },
+                            "error": {
+                                "type": "object",
+                                "properties": {
+                                "message": { "type": "string" },
+                                "name": { "type": "string" },
+                                "classtype": {
+                                    "type": "string",
+                                    "example": "ENTITYDOESNOTEXISTSERROR"
+                                }
+                                }
+                            },
+                            "date": {
+                                "type": "string",
+                                "format": "date-time"
+                            }
+                            }
+                        }
+                        }
+                    }
+                    },
+                    "500": {
+                    "description": "Internal server error",
+                    "content": {
+                        "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                            "status": { "type": "integer", "example": 500 },
+                            "params": {
+                                "type": "object",
+                                "properties": {
+                                "id": { "type": "string" }
+                                }
+                            },
+                            "body": {
+                                "type": "object",
+                                "properties": {
+                                "title": { "type": "string" },
+                                "type": { "type": "string" },
+                                "description": { "type": "string" },
+                                "value": { "type": "number", "format": "float" }
+                                }
+                            },
+                            "error": {
+                                "type": "object",
+                                "properties": {
+                                "message": { "type": "string" },
+                                "name": { "type": "string" },
+                                "classtype": {
+                                    "type": "string",
+                                    "example": "INTERNAL_SERVER_ERROR"
+                                },
+                                "class": { "type": "string" }
+                                }
+                            },
+                            "date": {
+                                "type": "string",
+                                "format": "date-time"
+                            }
+                            }
+                        }
+                        }
+                    }
+                    }
+                }
             }
         }
     },
