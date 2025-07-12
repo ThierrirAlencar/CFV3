@@ -1758,14 +1758,209 @@ export const swaggerOptions:OpenAPIObject = {
                     }
                 }
              }
+        },
+        "/category": {
+            "post": {
+            "tags": ["Category"],
+            "summary": "Create a new category",
+            "description": "Creates a new category with name, iconId and isCustom flag.",
+            "operationId": "createCategory",
+            "requestBody": {
+                "required": true,
+                "content": {
+                "application/json": {
+                    "schema": {
+                    "type": "object",
+                    "properties": {
+                        "name": { "type": "string" },
+                        "iconId": { "type": "string" },
+                        "isCustom": { "type": "boolean" }
+                    },
+                    "required": ["name", "iconId", "isCustom"]
+                    }
+                }
+                }
+            },
+            "responses": {
+                "201": {
+                "description": "Category created successfully",
+                "content": {
+                    "application/json": {
+                    "schema": {
+                        "type": "object",
+                        "properties": {
+                        "status": { "type": "integer", "example": 201 },
+                        "data": { "type": "object" },
+                        "body": { "type": "object" },
+                        "date": { "type": "string", "format": "date-time" }
+                        }
+                    }
+                    }
+                }
+                },
+                "500": {
+                "description": "Internal server error",
+                "content": {
+                    "application/json": {
+                    "schema": {
+                        "type": "object",
+                        "properties": {
+                        "status": { "type": "integer", "example": 500 },
+                        "error": { "type": "string" },
+                        "message": { "type": "string" }
+                        }
+                    }
+                    }
+                }
+                }
+            }
+            }
+        },
+        "/category/{id}": {
+            "get": {
+            "tags": ["Category"],
+            "summary": "Get category by ID",
+            "description": "Retrieves a specific category by its ID.",
+            "operationId": "getCategoryById",
+            "parameters": [
+                { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
+            ],
+            "responses": {
+                "200": {
+                "description": "Category found",
+                "content": {
+                    "application/json": {
+                    "schema": {
+                        "type": "object",
+                        "properties": {
+                        "status": { "type": "integer", "example": 200 },
+                        "data": { "type": "object" },
+                        "date": { "type": "string", "format": "date-time" }
+                        }
+                    }
+                    }
+                }
+                },
+                "404": { "description": "Category not found" },
+                "500": { "description": "Internal server error" }
+            }
+            },
+            "put": {
+            "tags": ["Category"],
+            "summary": "Update category by ID",
+            "description": "Updates an existing category.",
+            "operationId": "updateCategory",
+            "parameters": [
+                { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
+            ],
+            "requestBody": {
+                "required": true,
+                "content": {
+                "application/json": {
+                    "schema": {
+                    "type": "object",
+                    "properties": {
+                        "name": { "type": "string" },
+                        "iconId": { "type": "string" },
+                        "isCustom": { "type": "boolean" }
+                    }
+                    }
+                }
+                }
+            },
+            "responses": {
+                "200": { "description": "Category updated successfully" },
+                "404": { "description": "Category not found" },
+                "500": { "description": "Internal server error" }
+            }
+            },
+            "delete": {
+            "tags": ["Category"],
+            "summary": "Delete category by ID",
+            "description": "Deletes a category by its ID.",
+            "operationId": "deleteCategory",
+            "parameters": [
+                { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
+            ],
+            "responses": {
+                "200": { "description": "Category deleted successfully" },
+                "404": { "description": "Category not found" },
+                "500": { "description": "Internal server error" }
+            }
+            }
+        },
+        "/category/all": {
+            "get": {
+            "tags": ["Category"],
+            "summary": "Get all categories",
+            "description": "Retrieves all available categories.",
+            "operationId": "getAllCategories",
+            "responses": {
+                "200": {
+                "description": "All categories retrieved successfully",
+                "content": {
+                    "application/json": {
+                    "schema": {
+                        "type": "object",
+                        "properties": {
+                        "status": { "type": "integer", "example": 200 },
+                        "data": { "type": "array", "items": { "type": "object" } },
+                        "date": { "type": "string", "format": "date-time" }
+                        }
+                    }
+                    }
+                }
+                },
+                "500": { "description": "Internal server error" }
+            }
+            }
         }
     },
     "components": {
-    "securitySchemes": {
-      "bearerAuth": {
-        "type": "http",
-        "scheme": "bearer",
-        "bearerFormat": "JWT"
+        "securitySchemes": {
+        "bearerAuth": {
+            "type": "http",
+            "scheme": "bearer",
+            "bearerFormat": "JWT"
+        }
+    },
+    "schemas": {
+      "Category": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "name": { "type": "string" },
+          "iconId": { "type": "string" },
+          "isCustom": { "type": "boolean" },
+          "createdAt": { "type": "string", "format": "date-time" },
+          "updatedAt": { "type": "string", "format": "date-time" }
+        }
+      },
+      "CreateCategoryBody": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string" },
+          "iconId": { "type": "string" },
+          "isCustom": { "type": "boolean" }
+        },
+        "required": ["name", "iconId", "isCustom"]
+      },
+      "ErrorResponse": {
+        "type": "object",
+        "properties": {
+          "status": { "type": "integer" },
+          "error": { "type": "string" },
+          "message": { "type": "string" },
+          "date": { "type": "string", "format": "date-time" }
+        }
+      },
+      "SuccessResponse": {
+        "type": "object",
+        "properties": {
+          "status": { "type": "integer" },
+          "data": { "type": "object" },
+          "date": { "type": "string", "format": "date-time" }
+        }
       }
     }
   }
