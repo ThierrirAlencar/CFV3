@@ -1,6 +1,6 @@
-import { Body, Controller, Get, HttpException, HttpStatus, Post, Request, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpException, HttpStatus, Post, Request, UseGuards } from '@nestjs/common';
 import { ApiBody } from '@nestjs/swagger';
-import { CreateUserBody } from 'src/dtos/create-user';
+import { CreateUserBody } from 'src/interface/dtos/create-user';
 import { EntityAlreadyExists } from 'src/errors/entityAlreadyExists.error';
 import { EntityDoesNotExistsError } from 'src/errors/entityDoesNotExists.error';
 import { AuthGuard } from 'src/modules/auth/auth.guard';
@@ -72,6 +72,49 @@ export class UserController {
                 date:new Date()
             }
 
+        }catch(err){
+            if(err instanceof EntityDoesNotExistsError){
+                throw new HttpException({
+                    status:HttpStatus.NOT_FOUND,
+                    bearer:req.user,
+                    error:{
+                        message:err.message,
+                        name:err.name,
+                        classtype:"EntityDoesNotExistsError".toUpperCase()
+                    },
+                    date:new Date()
+                },HttpStatus.NOT_FOUND)
+            }else{
+                throw new HttpException({
+                    status:HttpStatus.INTERNAL_SERVER_ERROR,
+                    bearer:req.user,
+                    error:{
+                        message:err.message,
+                        name:err.name,
+                        classtype:"INTERNAL_SERVER_ERROR",
+                        class:String(err)
+                    },
+                    date:new Date()
+                },HttpStatus.NOT_FOUND)
+            }
+        }
+    }
+
+    @UseGuards(AuthGuard)
+    @Delete("/")
+    async delete(@Request() req){
+        const id = req.user.sub;
+
+        try{
+            const user = await this.userService.delete(id)
+
+            return{
+                status:HttpStatus.OK,
+                meta:{username:user.username,email:user.email},
+                bearer:req.user,
+                date:new Date()
+            }
+            
         }catch(err){
             if(err instanceof EntityDoesNotExistsError){
                 throw new HttpException({
