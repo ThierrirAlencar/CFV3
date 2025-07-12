@@ -1,8 +1,9 @@
-import { Body, Controller, HttpException, HttpStatus, Post } from '@nestjs/common';
-import { PrismaService } from 'src/database/prisma.service';
+import { Body, Controller, Get, HttpException, HttpStatus, Post, Request, UseGuards } from '@nestjs/common';
 import { CreateUserBody } from 'src/dtos/create-user';
 import { EntityAlreadyExists } from 'src/errors/entityAlreadyExists.error';
-import { userService } from 'src/services/user.service';
+import { EntityDoesNotExistsError } from 'src/errors/entityDoesNotExists.error';
+import { AuthGuard } from 'src/modules/auth/auth.guard';
+import { userService } from 'src/services/user/user.service';
 
 @Controller('user')
 export class UserController {
@@ -47,6 +48,49 @@ export class UserController {
                 throw new HttpException({
                     status:HttpStatus.INTERNAL_SERVER_ERROR,
                     body:{email,password,username,profileUrl},
+                    error:{
+                        message:err.message,
+                        name:err.name,
+                        classtype:"INTERNAL_SERVER_ERROR",
+                        class:String(err)
+                    },
+                    date:new Date()
+                },HttpStatus.NOT_FOUND)
+            }
+        }
+    }
+
+    @UseGuards(AuthGuard)
+    @Get("/")
+    async profile(@Request() req){
+        const id = req.user.sub;
+
+        try{
+            const profile = await this.userService.profile(id)
+
+            return{
+                status:HttpStatus.OK,
+                meta:profile,
+                bearer:req.user,
+                date:new Date()
+            }
+
+        }catch(err){
+            if(err instanceof EntityDoesNotExistsError){
+                throw new HttpException({
+                    status:HttpStatus.NOT_FOUND,
+                    bearer:req.user,
+                    error:{
+                        message:err.message,
+                        name:err.name,
+                        classtype:"EntityDoesNotExistsError".toUpperCase()
+                    },
+                    date:new Date()
+                },HttpStatus.NOT_FOUND)
+            }else{
+                throw new HttpException({
+                    status:HttpStatus.INTERNAL_SERVER_ERROR,
+                    bearer:req.user,
                     error:{
                         message:err.message,
                         name:err.name,

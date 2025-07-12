@@ -5,9 +5,15 @@ import { EntityDoesNotExistsError } from "src/errors/entityDoesNotExists.error";
 import { validationError } from "src/errors/validationError.error copy";
 import { userRepository } from "src/repositories/user.repository";
 
-interface defaultReturn{
+export interface defaultReturn{
     email:string,
     username:string
+}
+
+export interface profile{
+    email:string,
+    username:string
+    imageUrl:string,
 }
 
 @Injectable()
@@ -35,7 +41,7 @@ export class userService {
         }
     }
 
-    async profile(id:string):Promise<defaultReturn>{   
+    async profile(id:string):Promise<profile>{   
         const doesTheUserExists = await this.userRepository.findOneById(id)
 
         //Check if an user with this id exists
@@ -44,31 +50,10 @@ export class userService {
         }
         
         //Returns it
-        const {email,userName:username} = doesTheUserExists
+        const {email,userName:username,imageUrl} = doesTheUserExists
 
-        return {email,username}
+        return {email,username,imageUrl}
     }   
-
-    async login(email:string,password:string):Promise<{id:string}>{
-        const user = await this.userRepository.findOneByEmail(email)
-
-        //Checks if the entity with this email adress really exists
-        if(!user){
-            throw new EntityDoesNotExistsError("user",email)
-        }
-    
-        //Compare the password to check if it is right
-        const doesThePasswordIsRight = compareSync(password,user.password)
-
-        //Throws an error if the password is wrong
-        if(!doesThePasswordIsRight){
-            throw new validationError()
-        }
-
-        return {
-            id:user.id
-        }
-    }
 
     async delete(id:string):Promise<defaultReturn>{
         

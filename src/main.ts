@@ -17,6 +17,6 @@ async function bootstrap() {
   //Utilizado para validar entradas do body a partir de DTOS
   app.useGlobalPipes(new ValidationPipe())
 
-  console.log("Running App At: ",`https://${host}:${port}`)
+  console.log("Running App At: ",`http://${host}:${port}`)
 }
 bootstrap();
