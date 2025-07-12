@@ -67,7 +67,10 @@ export class userService {
         //Deletes this user
         const user = await this.userRepository.delete(id);
 
-        return user
+        return {
+            email:user.email,
+            username:user.username
+        }
     }
 
 

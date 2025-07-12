@@ -27,184 +27,188 @@ export const swaggerOptions:OpenAPIObject = {
         {
             "name": 'User',
             "description": 'User management endpoints'
+        },
+        {
+            "name": 'Account',
+            "description": 'Account management endpoints'
         }
     ],   
     "openapi":"3.0.0",
     "paths":{
         "/auth": {
-        "patch": {
-            "tags": ["Auth"],
-            
-            "summary": "Sign in with email and password",
-            "description": "Authenticate a user and return a JWT token",
-            "operationId": "signin",
-            "requestBody": {
-            "required": true,
-            "content": {
-                "application/json": {
-                "schema": {
-                    "type": "object",
-                    "properties": {
-                    "email": {
-                        "type": "string",
-                        "format": "email"
-                    },
-                    "password": {
-                        "type": "string",
-                        "format": "password"
-                    }
-                    },
-                    "required": ["email", "password"]
-                }
-                }
-            }
-            },
-            "responses": {
-            "201": {
-                "description": "Login successful",
+            "patch": {
+                "tags": ["Auth"],
+                
+                "summary": "Sign in with email and password",
+                "description": "Authenticate a user and return a JWT token",
+                "operationId": "signin",
+                "requestBody": {
+                "required": true,
                 "content": {
-                "application/json": {
+                    "application/json": {
                     "schema": {
-                    "type": "object",
-                    "properties": {
-                        "status": {
-                        "type": "integer",
-                        "example": 201
-                        },
-                        "meta": {
                         "type": "object",
                         "properties": {
-                            "token": {
-                            "type": "string"
-                            }
-                        }
-                        },
-                        "body": {
-                        "type": "object",
-                        "properties": {
-                            "email": {
+                        "email": {
                             "type": "string",
                             "format": "email"
+                        },
+                        "password": {
+                            "type": "string",
+                            "format": "password"
+                        }
+                        },
+                        "required": ["email", "password"]
+                    }
+                    }
+                }
+                },
+                "responses": {
+                "201": {
+                    "description": "Login successful",
+                    "content": {
+                    "application/json": {
+                        "schema": {
+                        "type": "object",
+                        "properties": {
+                            "status": {
+                            "type": "integer",
+                            "example": 201
+                            },
+                            "meta": {
+                            "type": "object",
+                            "properties": {
+                                "token": {
+                                "type": "string"
+                                }
+                            }
+                            },
+                            "body": {
+                            "type": "object",
+                            "properties": {
+                                "email": {
+                                "type": "string",
+                                "format": "email"
+                                }
+                            }
+                            },
+                            "date": {
+                            "type": "string",
+                            "format": "date-time"
                             }
                         }
-                        },
-                        "date": {
-                        "type": "string",
-                        "format": "date-time"
                         }
                     }
                     }
-                }
-                }
-            },
-            "404": {
-                "description": "User not found",
-                "content": {
-                "application/json": {
-                    "schema": {
-                    "type": "object",
-                    "properties": {
-                        "status": {
-                        "type": "integer",
-                        "example": 404
-                        },
-                        "body": {
+                },
+                "404": {
+                    "description": "User not found",
+                    "content": {
+                    "application/json": {
+                        "schema": {
                         "type": "object",
                         "properties": {
-                            "email": { "type": "string" },
-                            "password": { "type": "string" }
+                            "status": {
+                            "type": "integer",
+                            "example": 404
+                            },
+                            "body": {
+                            "type": "object",
+                            "properties": {
+                                "email": { "type": "string" },
+                                "password": { "type": "string" }
+                            }
+                            },
+                            "error": {
+                            "type": "object",
+                            "properties": {
+                                "message": { "type": "string" },
+                                "name": { "type": "string" },
+                                "classtype": { "type": "string", "example": "ENTITYDOESNOTEXISTSERROR" }
+                            }
+                            },
+                            "date": {
+                            "type": "string",
+                            "format": "date-time"
+                            }
                         }
-                        },
-                        "error": {
-                        "type": "object",
-                        "properties": {
-                            "message": { "type": "string" },
-                            "name": { "type": "string" },
-                            "classtype": { "type": "string", "example": "ENTITYDOESNOTEXISTSERROR" }
-                        }
-                        },
-                        "date": {
-                        "type": "string",
-                        "format": "date-time"
                         }
                     }
                     }
-                }
-                }
-            },
-            "400": {
-                "description": "Validation error",
-                "content": {
-                "application/json": {
-                    "schema": {
-                    "type": "object",
-                    "properties": {
-                        "status": {
-                        "type": "integer",
-                        "example": 400
-                        },
-                        "body": {
+                },
+                "400": {
+                    "description": "Validation error",
+                    "content": {
+                    "application/json": {
+                        "schema": {
                         "type": "object",
                         "properties": {
-                            "email": { "type": "string" },
-                            "password": { "type": "string" }
+                            "status": {
+                            "type": "integer",
+                            "example": 400
+                            },
+                            "body": {
+                            "type": "object",
+                            "properties": {
+                                "email": { "type": "string" },
+                                "password": { "type": "string" }
+                            }
+                            },
+                            "error": {
+                            "type": "object",
+                            "properties": {
+                                "message": { "type": "string" },
+                                "name": { "type": "string" },
+                                "classtype": { "type": "string", "example": "VALIDATIONERROR" }
+                            }
+                            },
+                            "date": {
+                            "type": "string",
+                            "format": "date-time"
+                            }
                         }
-                        },
-                        "error": {
-                        "type": "object",
-                        "properties": {
-                            "message": { "type": "string" },
-                            "name": { "type": "string" },
-                            "classtype": { "type": "string", "example": "VALIDATIONERROR" }
-                        }
-                        },
-                        "date": {
-                        "type": "string",
-                        "format": "date-time"
                         }
                     }
                     }
-                }
-                }
-            },
-            "500": {
-                "description": "Internal server error",
-                "content": {
-                "application/json": {
-                    "schema": {
-                    "type": "object",
-                    "properties": {
-                        "status": {
-                        "type": "integer",
-                        "example": 500
-                        },
-                        "body": {
+                },
+                "500": {
+                    "description": "Internal server error",
+                    "content": {
+                    "application/json": {
+                        "schema": {
                         "type": "object",
                         "properties": {
-                            "email": { "type": "string" },
-                            "password": { "type": "string" }
+                            "status": {
+                            "type": "integer",
+                            "example": 500
+                            },
+                            "body": {
+                            "type": "object",
+                            "properties": {
+                                "email": { "type": "string" },
+                                "password": { "type": "string" }
+                            }
+                            },
+                            "error": {
+                            "type": "object",
+                            "properties": {
+                                "message": { "type": "string" },
+                                "name": { "type": "string" },
+                                "classtype": { "type": "string", "example": "INTERNAL_SERVER_ERROR" },
+                                "class": { "type": "string" }
+                            }
+                            },
+                            "date": {
+                            "type": "string",
+                            "format": "date-time"
+                            }
                         }
-                        },
-                        "error": {
-                        "type": "object",
-                        "properties": {
-                            "message": { "type": "string" },
-                            "name": { "type": "string" },
-                            "classtype": { "type": "string", "example": "INTERNAL_SERVER_ERROR" },
-                            "class": { "type": "string" }
-                        }
-                        },
-                        "date": {
-                        "type": "string",
-                        "format": "date-time"
                         }
                     }
                     }
                 }
                 }
             }
-            }
-        }
         },
         "/user":{
             "post": {
@@ -390,7 +394,124 @@ export const swaggerOptions:OpenAPIObject = {
                             "description": "Decoded bearer token",
                             "properties": {
                                 "sub": { "type": "string" },
-                                "email": { "type": "string", "format": "email" },
+                                "iat": { "type": "integer" },
+                                "exp": { "type": "integer" }
+                            }
+                            },
+                            "date": {
+                            "type": "string",
+                            "format": "date-time"
+                            }
+                        }
+                        }
+                    }
+                    }
+                },
+                "404": {
+                    "description": "User not found",
+                    "content": {
+                    "application/json": {
+                        "schema": {
+                        "type": "object",
+                        "properties": {
+                            "status": {
+                            "type": "integer",
+                            "example": 404
+                            },
+                            "bearer": {
+                            "type": "object"
+                            },
+                            "error": {
+                            "type": "object",
+                            "properties": {
+                                "message": { "type": "string" },
+                                "name": { "type": "string" },
+                                "classtype": {
+                                "type": "string",
+                                "example": "ENTITYDOESNOTEXISTSERROR"
+                                }
+                            }
+                            },
+                            "date": {
+                            "type": "string",
+                            "format": "date-time"
+                            }
+                        }
+                        }
+                    }
+                    }
+                },
+                "500": {
+                    "description": "Internal server error",
+                    "content": {
+                    "application/json": {
+                        "schema": {
+                        "type": "object",
+                        "properties": {
+                            "status": {
+                            "type": "integer",
+                            "example": 500
+                            },
+                            "bearer": {
+                            "type": "object"
+                            },
+                            "error": {
+                            "type": "object",
+                            "properties": {
+                                "message": { "type": "string" },
+                                "name": { "type": "string" },
+                                "classtype": {
+                                "type": "string",
+                                "example": "INTERNAL_SERVER_ERROR"
+                                },
+                                "class": { "type": "string" }
+                            }
+                            },
+                            "date": {
+                            "type": "string",
+                            "format": "date-time"
+                            }
+                        }
+                        }
+                    }
+                    }
+                }
+                }
+             },
+             "delete": {
+                "summary": "Delete authenticated user",
+                "description": "Deletes the account of the authenticated user using bearer token",
+                "operationId": "deleteUser",
+                "security": [
+                {
+                    "bearerAuth": []
+                }
+                ],
+                "tags": ["User"],
+                "responses": {
+                "200": {
+                    "description": "User deleted successfully",
+                    "content": {
+                    "application/json": {
+                        "schema": {
+                        "type": "object",
+                        "properties": {
+                            "status": {
+                            "type": "integer",
+                            "example": 200
+                            },
+                            "meta": {
+                            "type": "object",
+                            "properties": {
+                                "username": { "type": "string" },
+                                "email": { "type": "string", "format": "email" }
+                            }
+                            },
+                            "bearer": {
+                            "type": "object",
+                            "description": "Decoded JWT token",
+                            "properties": {
+                                "sub": { "type": "string" },
                                 "iat": { "type": "integer" },
                                 "exp": { "type": "integer" }
                             }
@@ -475,6 +596,155 @@ export const swaggerOptions:OpenAPIObject = {
                 }
                 }
              }
+        },
+        "/account": {
+            "post": {
+                "tags":["Account"],
+                "summary": "Create a new account",
+                "description": "Creates a financial account for the authenticated user",
+                "operationId": "createAccount",
+                "security": [
+                {
+                    "bearerAuth": []
+                }
+                ],
+                "requestBody": {
+                "required": true,
+                "content": {
+                    "application/json": {
+                    "schema": {
+                        "type": "object",
+                        "properties": {
+                        "title": { "type": "string" },
+                        "type": { "type": "string" },
+                        "description": { "type": "string" },
+                        "initialBalace": {
+                            "type": "number",
+                            "format": "float"
+                        }
+                        },
+                        "required": ["title", "type", "description", "initialBalace"]
+                    }
+                    }
+                }
+                },
+                "responses": {
+                "201": {
+                    "description": "Account created successfully",
+                    "content": {
+                    "application/json": {
+                        "schema": {
+                        "type": "object",
+                        "properties": {
+                            "status": {
+                            "type": "integer",
+                            "example": 201
+                            },
+                            "body": {
+                            "type": "object",
+                            "properties": {
+                                "title": { "type": "string" },
+                                "type": { "type": "string" },
+                                "description": { "type": "string" },
+                                "initialBalace": {
+                                "type": "number",
+                                "format": "float"
+                                }
+                            }
+                            },
+                            "meta": {
+                            "type": "object",
+                            "properties": {
+                                "title": { "type": "string" },
+                                "description": { "type": "string" }
+                            }
+                            },
+                            "date": {
+                            "type": "string",
+                            "format": "date-time"
+                            }
+                        }
+                        }
+                    }
+                    }
+                },
+                "404": {
+                    "description": "User not found (entity does not exist)",
+                    "content": {
+                    "application/json": {
+                        "schema": {
+                        "type": "object",
+                        "properties": {
+                            "status": { "type": "integer", "example": 404 },
+                            "body": {
+                            "type": "object",
+                            "properties": {
+                                "title": { "type": "string" },
+                                "type": { "type": "string" },
+                                "description": { "type": "string" },
+                                "initialBalace": { "type": "number", "format": "float" }
+                            }
+                            },
+                            "error": {
+                            "type": "object",
+                            "properties": {
+                                "message": { "type": "string" },
+                                "name": { "type": "string" },
+                                "classtype": {
+                                "type": "string",
+                                "example": "ENTITYDOESNOTEXISTSERROR"
+                                }
+                            }
+                            },
+                            "date": {
+                            "type": "string",
+                            "format": "date-time"
+                            }
+                        }
+                        }
+                    }
+                    }
+                },
+                "500": {
+                    "description": "Internal server error",
+                    "content": {
+                    "application/json": {
+                        "schema": {
+                        "type": "object",
+                        "properties": {
+                            "status": { "type": "integer", "example": 500 },
+                            "body": {
+                            "type": "object",
+                            "properties": {
+                                "title": { "type": "string" },
+                                "type": { "type": "string" },
+                                "description": { "type": "string" },
+                                "initialBalace": { "type": "number", "format": "float" }
+                            }
+                            },
+                            "error": {
+                            "type": "object",
+                            "properties": {
+                                "message": { "type": "string" },
+                                "name": { "type": "string" },
+                                "classtype": {
+                                "type": "string",
+                                "example": "INTERNAL_SERVER_ERROR"
+                                },
+                                "class": { "type": "string" }
+                            }
+                            },
+                            "date": {
+                            "type": "string",
+                            "format": "date-time"
+                            }
+                        }
+                        }
+                    }
+                    }
+                }
+                }
+            }
         }
     },
     "components": {
