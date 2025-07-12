@@ -20,24 +20,6 @@ enum AccountType {
   corretoraDeInvestimentos
 }
 
-enum TransactionCategories {
-  // para saques 
-  alimentacao 
-  educacao
-  laser
-  saude
-  eletronicos
-  compras
-  beleza
-  veiculo
-  roupas
-
-  // para depósitos 
-  investimento
-  salario
-  comissao
-  outro
-}
 
 enum GoalCategory {
   fundoDeEmergencia
@@ -49,16 +31,16 @@ enum GoalCategory {
 model User {
   id           String     @id @default(uuid())
   email        String     @unique
-  senha        String
+  password        String
   userName     String
   accountList  Account[]
   goalList     Goal[]
-  profileUrl   String?
+  imageUrl   String?
 }
 
 model Account {
   id              String        @id @default(uuid())
-  name            String
+  title           String
   value           Float         @default(0)
   description     String?
   user            User          @relation(fields: [userId], references: [id])
@@ -70,8 +52,8 @@ model Account {
 model Goal {
   id             String     @id @default(uuid())
   title          String
-  value          Float      @default(0)
-  targetedValue  Float      @default(0)
+  currentValue          Float      @default(0)
+  targetValue    Float      @default(0)
   createdAt      DateTime   @default(now())
   completedAt    DateTime?
   endTime        DateTime
@@ -86,8 +68,19 @@ model Transaction {
   value       Float
   type        Type
   createdAt   DateTime              @default(now())
-  categories  TransactionCategories?
 
   account     Account               @relation(fields: [accountId], references: [id])
   accountId   String
+
+  category    Category              @relation(fields: [categoryId], references: [id])
+  categoryId  String
+}
+
+model Category{
+  id                String      @id @default(uuid())
+  title              String      @unique
+  iconId            String
+  isCustom          Boolean     @default(false)
+
+  transactionsList  Transaction[]
 }
