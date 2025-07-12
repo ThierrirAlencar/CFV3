@@ -1914,6 +1914,320 @@ export const swaggerOptions:OpenAPIObject = {
                 "500": { "description": "Internal server error" }
             }
             }
+        },
+        "/goal": {
+            "post": {
+                "tags": ["Goal"],
+                "summary": "Create a new goal",
+                "description": "Creates a new financial goal for the authenticated user.",
+                "operationId": "createGoal",
+                "security": [
+                {
+                    "bearerAuth": []
+                }
+                ],
+                "requestBody": {
+                "required": true,
+                "content": {
+                    "application/json": {
+                    "schema": {
+                        "$ref": "#/components/schemas/CreateGoalBody"
+                    }
+                    }
+                }
+                },
+                "responses": {
+                "201": {
+                    "description": "Goal created successfully",
+                    "content": {
+                    "application/json": {
+                        "schema": {
+                        "type": "object",
+                        "properties": {
+                            "status": {
+                            "type": "integer",
+                            "example": 201
+                            },
+                            "data": {
+                            "$ref": "#/components/schemas/Goal"
+                            },
+                            "date": {
+                            "type": "string",
+                            "format": "date-time"
+                            },
+                            "body": {
+                            "$ref": "#/components/schemas/CreateGoalBody"
+                            }
+                        }
+                        }
+                    }
+                    }
+                },
+                "404": {
+                    "description": "User not found",
+                    "content": {
+                    "application/json": {
+                        "schema": {
+                        "$ref": "#/components/schemas/ErrorResponse"
+                        }
+                    }
+                    }
+                },
+                "500": {
+                    "description": "Internal server error",
+                    "content": {
+                    "application/json": {
+                        "schema": {
+                        "$ref": "#/components/schemas/ErrorResponse"
+                        }
+                    }
+                    }
+                }
+                }
+            }
+        },
+        "/goal/{id}": {
+            "get": {
+                "tags": ["Goal"],
+                "summary": "Get goal by ID",
+                "description": "Retrieve a single financial goal by its ID.",
+                "operationId": "getSingleGoal",
+                "parameters": [
+                {
+                    "name": "id",
+                    "in": "path",
+                    "required": true,
+                    "schema": { "type": "string" }
+                }
+                ],
+                "responses": {
+                "200": {
+                    "description": "Goal retrieved successfully",
+                    "content": {
+                    "application/json": {
+                        "schema": {
+                        "type": "object",
+                        "properties": {
+                            "status": { "type": "integer", "example": 200 },
+                            "data": { "$ref": "#/components/schemas/Goal" },
+                            "params": {
+                            "type": "object",
+                            "properties": {
+                                "id": { "type": "string" }
+                            }
+                            },
+                            "date": { "type": "string", "format": "date-time" }
+                        }
+                        }
+                    }
+                    }
+                },
+                "404": {
+                    "description": "Goal not found",
+                    "content": {
+                    "application/json": {
+                        "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+                    }
+                    }
+                },
+                "500": {
+                    "description": "Internal server error",
+                    "content": {
+                    "application/json": {
+                        "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+                    }
+                    }
+                }
+                }
+            },
+            "delete": {
+                "tags": ["Goal"],
+                "summary": "Delete a goal",
+                "description": "Deletes a financial goal by its ID.",
+                "operationId": "deleteGoal",
+                "parameters": [
+                {
+                    "name": "id",
+                    "in": "path",
+                    "required": true,
+                    "schema": {
+                    "type": "string"
+                    }
+                }
+                ],
+                "responses": {
+                "200": {
+                    "description": "Goal deleted successfully",
+                    "content": {
+                    "application/json": {
+                        "schema": {
+                        "type": "object",
+                        "properties": {
+                            "status": { "type": "integer", "example": 200 },
+                            "data": { "$ref": "#/components/schemas/Goal" },
+                            "params": {
+                            "type": "object",
+                            "properties": {
+                                "id": { "type": "string" }
+                            }
+                            },
+                            "date": { "type": "string", "format": "date-time" }
+                        }
+                        }
+                    }
+                    }
+                },
+                "404": {
+                    "description": "Goal not found",
+                    "content": {
+                    "application/json": {
+                        "schema": {
+                        "$ref": "#/components/schemas/ErrorResponse"
+                        }
+                    }
+                    }
+                },
+                "500": {
+                    "description": "Internal server error",
+                    "content": {
+                    "application/json": {
+                        "schema": {
+                        "$ref": "#/components/schemas/ErrorResponse"
+                        }
+                    }
+                    }
+                }
+                }
+            },
+            "put": {
+                "tags": ["Goal"],
+                "summary": "Update a goal",
+                "description": "Update the properties of an existing goal by ID.",
+                "operationId": "updateGoal",
+                "parameters": [
+                {
+                    "name": "id",
+                    "in": "path",
+                    "required": true,
+                    "schema": { "type": "string" }
+                }
+                ],
+                "requestBody": {
+                "required": true,
+                "content": {
+                    "application/json": {
+                    "schema": { "$ref": "#/components/schemas/GoalUpdateBody" }
+                    }
+                }
+                },
+                "responses": {
+                "201": {
+                    "description": "Goal updated successfully",
+                    "content": {
+                    "application/json": {
+                        "schema": {
+                        "type": "object",
+                        "properties": {
+                            "status": { "type": "integer", "example": 201 },
+                            "body": { "$ref": "#/components/schemas/GoalUpdateBody" },
+                            "data": { "$ref": "#/components/schemas/Goal" },
+                            "date": { "type": "string", "format": "date-time" }
+                        }
+                        }
+                    }
+                    }
+                },
+                "404": {
+                    "description": "Goal not found",
+                    "content": {
+                    "application/json": {
+                        "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+                    }
+                    }
+                },
+                "500": {
+                    "description": "Internal server error",
+                    "content": {
+                    "application/json": {
+                        "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+                    }
+                    }
+                }
+                }
+            },
+
+        },
+        "/goal/complete/{id}": {
+            "put": {
+                "summary": "Mark goal as completed",
+                "description": "Marca uma meta como concluída atribuindo a data atual ao campo `completedAt`.",
+                "tags": ["Goal"],
+                "operationId": "markGoalAsCompleted",
+                "parameters": [
+                {
+                    "name": "id",
+                    "in": "path",
+                    "required": true,
+                    "description": "ID da meta a ser marcada como concluída",
+                    "schema": {
+                    "type": "string"
+                    }
+                }
+                ],
+                "responses": {
+                "201": {
+                    "description": "Meta marcada como concluída com sucesso",
+                    "content": {
+                    "application/json": {
+                        "schema": {
+                        "type": "object",
+                        "properties": {
+                            "status": {
+                            "type": "integer",
+                            "example": 201
+                            },
+                            "param": {
+                            "type": "object",
+                            "properties": {
+                                "id": {
+                                "type": "string"
+                                }
+                            }
+                            },
+                            "data": {
+                            "$ref": "#/components/schemas/Goal"
+                            },
+                            "date": {
+                            "type": "string",
+                            "format": "date-time"
+                            }
+                        }
+                        }
+                    }
+                    }
+                },
+                "404": {
+                    "description": "Meta não encontrada",
+                    "content": {
+                    "application/json": {
+                        "schema": {
+                        "$ref": "#/components/schemas/ErrorNotFound"
+                        }
+                    }
+                    }
+                },
+                "500": {
+                    "description": "Erro interno no servidor",
+                    "content": {
+                    "application/json": {
+                        "schema": {
+                        "$ref": "#/components/schemas/ErrorInternal"
+                        }
+                    }
+                    }
+                }
+                }
+            }
         }
     },
     "components": {
@@ -1961,7 +2275,31 @@ export const swaggerOptions:OpenAPIObject = {
           "data": { "type": "object" },
           "date": { "type": "string", "format": "date-time" }
         }
-      }
+      },
+      "CreateGoalBody": {
+        "type": "object",
+        "properties": {
+          "title": { "type": "string" },
+          "targetDate": { "type": "string", "format": "date" },
+          "currentValue": { "type": "number" },
+          "targetValue": { "type": "number" }
+        },
+        "required": ["title", "targetDate", "currentValue", "targetValue"]
+      },
+      "Goal": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "title": { "type": "string" },
+          "currentValue": { "type": "number" },
+          "targetValue": { "type": "number" },
+          "dueDate": { "type": "string", "format": "date" },
+          "userId": { "type": "string" },
+          "createdAt": { "type": "string", "format": "date-time" },
+          "updatedAt": { "type": "string", "format": "date-time" }
+        }
+      },
+
     }
   }
 }

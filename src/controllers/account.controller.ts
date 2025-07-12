@@ -4,8 +4,8 @@ import { last } from "rxjs";
 import { EntityDoesNotExistsError } from "src/errors/entityDoesNotExists.error";
 import { accounQuery } from "src/interface/account-query";
 import { AccountFilterParams } from "src/interface/dtos/account-filter";
-import { accountUpdateBody } from "src/interface/dtos/account-update.";
-import { createAccountBody } from "src/interface/dtos/create-account";
+import { accountUpdateBody } from "src/interface/dtos/update/account-update.";
+import { createAccountBody } from "src/interface/dtos/create/create-account";
 import { AuthGuard } from "src/modules/auth/auth.guard";
 import { accountService } from "src/services/accounts/account.service";
 

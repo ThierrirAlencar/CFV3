@@ -1,5 +1,5 @@
 import { Body, Controller, Delete, Get, HttpException, HttpStatus, Param, Post, Put } from "@nestjs/common";
-import { createCategoryBody } from "src/interface/dtos/create-category";
+import { createCategoryBody } from "src/interface/dtos/create/create-category";
 import { categoryService } from "src/services/category/category.service";
 
 @Controller("category")

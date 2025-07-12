@@ -10,10 +10,11 @@ import { AuthController } from './controllers/auth.controller';
 import { accountModule } from './modules/account/account.module';
 import { CategoryModule } from './modules/category/category.module';
 import { TransactionModule } from './modules/transaction/transaction.module';
+import { goalModule } from './modules/goals/goal.module';
 
 
 @Module({
-  imports: [AuthModule,accountModule,TransactionModule,CategoryModule],
+  imports: [AuthModule,accountModule,TransactionModule,CategoryModule,goalModule],
   controllers: [UserController],
   providers: [PrismaService,userService,
     {

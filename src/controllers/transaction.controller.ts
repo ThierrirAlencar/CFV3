@@ -2,8 +2,8 @@ import { Body, Controller, Delete, Get, HttpException, HttpStatus, Param, Post, 
 import { first } from "rxjs";
 import { EntityDoesNotExistsError } from "src/errors/entityDoesNotExists.error";
 import { queryTransaction } from "src/interface/defaultTransaction";
-import { createAccountBody } from "src/interface/dtos/create-account";
-import { createTransactionBody } from "src/interface/dtos/create-transaction";
+import { createAccountBody } from "src/interface/dtos/create/create-account";
+import { createTransactionBody } from "src/interface/dtos/create/create-transaction";
 import { transactionFilterBody } from "src/interface/dtos/transaction-filter";
 import { transactionService } from "src/services/transactions/transaction.service";
 
