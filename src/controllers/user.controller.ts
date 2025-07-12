@@ -1,4 +1,5 @@
 import { Body, Controller, Get, HttpException, HttpStatus, Post, Request, UseGuards } from '@nestjs/common';
+import { ApiBody } from '@nestjs/swagger';
 import { CreateUserBody } from 'src/dtos/create-user';
 import { EntityAlreadyExists } from 'src/errors/entityAlreadyExists.error';
 import { EntityDoesNotExistsError } from 'src/errors/entityDoesNotExists.error';
@@ -8,11 +9,7 @@ import { userService } from 'src/services/user/user.service';
 @Controller('user')
 export class UserController {
     
-    constructor(
-        private userService:userService
-    ){
-        
-    }
+    constructor(private userService:userService){}
 
     @Post("/")
     async create(@Body() body: CreateUserBody){

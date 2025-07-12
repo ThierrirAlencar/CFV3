@@ -1,4 +1,5 @@
 import { Body, Controller, HttpException, HttpStatus, Patch } from '@nestjs/common';
+import { ApiBody, ApiResponse } from '@nestjs/swagger';
 import { loginUserBody } from 'src/dtos/login-user';
 import { EntityDoesNotExistsError } from 'src/errors/entityDoesNotExists.error';
 import { validationError } from 'src/errors/validationError.error copy';

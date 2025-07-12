@@ -1,7 +1,9 @@
+import { ApiProperty } from "@nestjs/swagger"
 import { IsEmail, isNotEmpty, IsNotEmpty, Length } from "class-validator"
 
 //Inclui as validações de classe do class-validator
 export class CreateUserBody{
+
 
     @IsEmail()
     @IsNotEmpty({
@@ -9,6 +11,7 @@ export class CreateUserBody{
     })
     email:        string
     
+
     @IsNotEmpty({
         message:"The password is required"
     })
@@ -16,11 +19,13 @@ export class CreateUserBody{
         message:"The password must contain at least 6 characters and less than 16"
     })
     password:        string
+    
 
     @IsNotEmpty({
         message:"The userName is required"
     })
     userName:     string
+
 
     imageUrl?:    string
 }
