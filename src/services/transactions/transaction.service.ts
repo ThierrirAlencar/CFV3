@@ -29,6 +29,7 @@ export class transactionService{
                 type?: Type;
                 createdBefore?:Date;
                 createdAfter?:Date;
+                categoryId?:string;
             },
             accountId:string, 
             page:number,
