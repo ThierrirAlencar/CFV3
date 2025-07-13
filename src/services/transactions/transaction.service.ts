@@ -17,7 +17,18 @@ export class transactionService{
         const doesTheAccountExist = await this.accountRepository.findOneById(data.accountId);
 
         if(!doesTheAccountExist) throw new EntityDoesNotExistsError("Account",data.accountId);
-
+        
+        //alterar o valor da conta baseado na transação 
+        switch(data.type){
+            case "income":
+                this.accountRepository.update({
+                    value:(doesTheAccountExist.value+data.value)
+                },doesTheAccountExist.id); break;
+            case "outcome":
+                this.accountRepository.update({
+                    value:(doesTheAccountExist.value-data.value)
+                },doesTheAccountExist.id); break;
+        }
         return await this.transactionRepository.create(data);
     }   
 
@@ -41,6 +52,7 @@ export class transactionService{
             if (!doesTheAccountExist) {
                 throw new EntityDoesNotExistsError("account",accountId)
             }
+
 
             const { title, type, minValue, maxValue } = filterData;
 
@@ -68,7 +80,20 @@ export class transactionService{
     async delete(id:string):Promise<defaultTransaction>{
         const doesTheTransactionExist = await this.transactionRepository.findOneById(id);
         if(doesTheTransactionExist){
-            return this.transactionRepository.delete(id);
+            const account = await this.accountRepository.findOneById(doesTheTransactionExist.accountId)
+            const transaction =await this.transactionRepository.delete(id);
+            //alterar o valor da conta baseado na transação 
+            switch(transaction.type){
+                case "income":
+                    this.accountRepository.update({
+                        value:(account.value-transaction.value)
+                    },account.id); break;
+                case "outcome":
+                    this.accountRepository.update({
+                        value:(account.value+transaction.value)
+                    },account.id); break;
+            }
+            return transaction
         }else{
             throw new EntityDoesNotExistsError("Transaction", id);
         }

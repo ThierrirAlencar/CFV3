@@ -13,7 +13,7 @@ export class TransactionController {
   // Methods for handling transactions will be added here in the future
     private baseUrl = `http://${process.env.API_HOST}:${process.env.API_PORT}/transaction`; 
     constructor(
-        private transactionService:transactionService
+        private transactionService:transactionService,
     ){}
 
     @Post("/")

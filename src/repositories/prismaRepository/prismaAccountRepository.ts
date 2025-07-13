@@ -22,7 +22,7 @@ export class prismaAccountRepository implements accountRepository {
             id
         }
     }
-    async findManyByFilter(query: accounQuery, uid: string,config:{page:number,pageSize:number}): Promise<Account[]> {
+    async findManyByFilter(query: accounQuery, uid: string,config:{page:number,pageSize:number}): Promise<{paginated:Account[],total:Account[]}> {
         const { query: searchQuery, type, minValue } = query;
         const { page, pageSize } = config;
 
@@ -38,11 +38,16 @@ export class prismaAccountRepository implements accountRepository {
             ...(minValue && { value: { gte: minValue } }),
         };
 
-        return this.prisma.account.findMany({
-            where,
-            take:page * pageSize,
-            skip: (page - 1) * pageSize,
-        });
+        return {
+            paginated:  await this.prisma.account.findMany({
+                where,
+                take:page * pageSize,
+                skip: (page - 1) * pageSize,
+            }),
+            total:await this.prisma.account.findMany({
+                where,
+            }),
+        }
     }
     async findOneById(id: string): Promise<Account | null> {
         const account = await this.prisma.account.findUnique({

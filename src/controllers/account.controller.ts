@@ -74,7 +74,7 @@ export class AccountController {
         const userId = req.user.sub;
         const {maxValue,minValue,query,type,page,pageSize} = params;
         try{
-            const accounts = await this.accountService.findManyByFilter({
+            const data = await this.accountService.findManyByFilter({
                 query,
                 type,
                 minValue,
@@ -84,24 +84,24 @@ export class AccountController {
             return {
                 status: 200,
                 params: params,
-                data:accounts,
+                data:data,
                 meta:{
-                    maxPage: Math.ceil(accounts.length / pageSize),
+                    maxPage: Math.ceil(data.totalAccounts.length / pageSize),
                     page: Number(page),
                     pageSize: Number(pageSize),
-                    totalCount: accounts.length,
+                    totalCount: data.totalAccounts.length,
                     links:{
                         first:`${this.baseUrl}?page=1&pageSize=${pageSize}`,
-                        last:`${this.baseUrl}?page=${Math.ceil(accounts.length / pageSize)}&pageSize=${pageSize}`,
-                        next: page < Math.ceil(accounts.length / pageSize) ? `${this.baseUrl}?page=${Number(page) + 1}&pageSize=${pageSize}` : null,
+                        last:`${this.baseUrl}?page=${Math.ceil(data.totalAccounts.length / pageSize)}&pageSize=${pageSize}`,
+                        next: page < Math.ceil(data.totalAccounts.length / pageSize) ? `${this.baseUrl}?page=${Number(page) + 1}&pageSize=${pageSize}` : null,
                         prev: page > 1 ? `${this.baseUrl}?page=${Number(page) - 1}&pageSize=${pageSize}` : null,
                     }
                 },
                 date: new Date(),
                 links:{
                     first:`${this.baseUrl}?page=1&pageSize=${pageSize}`,
-                    last:`${this.baseUrl}?page=${Math.ceil(accounts.length / pageSize)}&pageSize=${pageSize}`,
-                    next: page < Math.ceil(accounts.length / pageSize) ? `${this.baseUrl}?page=${page + 1}&pageSize=${pageSize}` : null,
+                    last:`${this.baseUrl}?page=${Math.ceil(data.totalAccounts.length / pageSize)}&pageSize=${pageSize}`,
+                    next: page < Math.ceil(data.totalAccounts.length / pageSize) ? `${this.baseUrl}?page=${page + 1}&pageSize=${pageSize}` : null,
                     prev: page > 1 ? `${this.baseUrl}?page=${page - 1}&pageSize=${pageSize}` : null,
                 }
             }

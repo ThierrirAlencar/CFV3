@@ -26,6 +26,6 @@ async function bootstrap() {
 
 
   await app.listen(port,host);
-  console.log("Running App At: ",`http://${host}:${port} \nhttp://${host}:${port}/docs`);
+  console.log("Running App At: ",`http://${host}:${port} \nhttp://${host}:${port}/docs\nScalar documentation: https://control-financev3.apidocumentation.com`);
 }
 bootstrap();

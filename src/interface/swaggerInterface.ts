@@ -2,8 +2,8 @@ import { OpenAPIObject } from "@nestjs/swagger";
 
 export const swaggerOptions:OpenAPIObject = {
     "info":{
-        "title": 'Control Finance V3',
-        "description": 'Welcome! This is the Control Finance API documentation. Control Finance V2 is a full-scale monetary management application.',
+        "title": "Control Finance V3",
+        "description": "Welcome! This is the Control Finance API documentation. Control Finance V2 is a full-scale monetary management application.",
         "version": '1.2',
         "contact":{
             "name": 'Control Finance',
@@ -35,6 +35,14 @@ export const swaggerOptions:OpenAPIObject = {
         {
             "name": 'Transactions',
             "description": 'Transaction management endpoints'
+        },
+        {
+            "name": "Goal",
+            "description": "Goal management endpoints"
+        },
+        {
+            "name": "Category",
+            "description": "Category management endpoints"
         }
     ],   
     "openapi":"3.0.0",
@@ -763,58 +771,32 @@ export const swaggerOptions:OpenAPIObject = {
                 {
                     "name": "query",
                     "in": "query",
-                    "description": "Search term to filter account titles or descriptions",
-                    "required": false,
-                    "schema": {
-                    "type": "string"
-                    }
+                    "schema": { "type": "string" }
                 },
                 {
                     "name": "type",
                     "in": "query",
-                    "description": "Filter accounts by type",
-                    "required": false,
-                    "schema": {
-                    "type": "string"
-                    }
+                    "schema": { "type": "string" }
                 },
                 {
                     "name": "minValue",
                     "in": "query",
-                    "description": "Minimum value for initial balance filter",
-                    "required": false,
-                    "schema": {
-                    "type": "number",
-                    "format": "float"
-                    }
+                    "schema": { "type": "number", "format": "float" }
                 },
                 {
                     "name": "maxValue",
                     "in": "query",
-                    "description": "Maximum value for initial balance filter",
-                    "required": false,
-                    "schema": {
-                    "type": "number",
-                    "format": "float"
-                    }
+                    "schema": { "type": "number", "format": "float" }
                 },
                 {
                     "name": "page",
                     "in": "query",
-                    "description": "Page number for pagination",
-                    "required": false,
-                    "schema": {
-                    "type": "integer"
-                    }
+                    "schema": { "type": "integer" }
                 },
                 {
                     "name": "pageSize",
                     "in": "query",
-                    "description": "Number of items per page",
-                    "required": false,
-                    "schema": {
-                    "type": "integer"
-                    }
+                    "schema": { "type": "integer" }
                 }
                 ],
                 "responses": {
@@ -825,110 +807,78 @@ export const swaggerOptions:OpenAPIObject = {
                         "schema": {
                         "type": "object",
                         "properties": {
-                            "status": {
-                            "type": "integer",
-                            "example": 200
-                            },
+                            "status": { "type": "integer", "example": 200 },
                             "params": {
                             "type": "object",
                             "properties": {
                                 "query": { "type": "string" },
                                 "type": { "type": "string" },
-                                "minValue": { "type": "number", "format": "float" },
-                                "maxValue": { "type": "number", "format": "float" },
-                                "page": { "type": "integer" },
-                                "pageSize": { "type": "integer" }
+                                "minValue": { "type": "string" },
+                                "maxValue": { "type": "string" },
+                                "page": { "type": "string" },
+                                "pageSize": { "type": "string" }
                             }
                             },
-                            "meta": {
-                            "type": "array",
-                            "items": {
+                            "data": {
+                            "type": "object",
+                            "properties": {
+                                "filteredAccounts": {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/AccountWithResume"
+                                }
+                                },
+                                "totalAccounts": {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/AccountWithResume"
+                                }
+                                },
+                                "data": {
                                 "type": "object",
                                 "properties": {
-                                "title": { "type": "string" },
-                                "type": { "type": "string" },
-                                "description": { "type": "string" },
-                                "initialBalace": { "type": "number", "format": "float" }
+                                    "value": { "type": "number" },
+                                    "income": { "type": "number" },
+                                    "outcome": { "type": "number" }
+                                }
+                                },
+                                "transactions": {
+                                "type": "object",
+                                "properties": {
+                                    "size": { "type": "integer" },
+                                    "income": { "type": "number" },
+                                    "outcome": { "type": "number" },
+                                    "list": {
+                                    "type": "array",
+                                    "items": { "$ref": "#/components/schemas/Transaction" }
+                                    }
+                                }
                                 }
                             }
                             },
-                            "date": {
-                            "type": "string",
-                            "format": "date-time"
-                            }
-                        }
-                        }
-                    }
-                    }
-                },
-                "404": {
-                    "description": "User not found",
-                    "content": {
-                    "application/json": {
-                        "schema": {
-                        "type": "object",
-                        "properties": {
-                            "status": { "type": "integer", "example": 404 },
-                            "params": {
+                            "meta": {
                             "type": "object",
                             "properties": {
-                                "query": { "type": "string" },
-                                "type": { "type": "string" },
-                                "minValue": { "type": "number", "format": "float" },
-                                "maxValue": { "type": "number", "format": "float" },
+                                "maxPage": { "type": "integer" },
                                 "page": { "type": "integer" },
-                                "pageSize": { "type": "integer" }
+                                "pageSize": { "type": "integer" },
+                                "totalCount": { "type": "integer" },
+                                "links": {
+                                "$ref": "#/components/schemas/PaginationLinks"
+                                }
                             }
                             },
-                            "error": {
-                            "type": "object",
-                            "properties": {
-                                "message": { "type": "string" },
-                                "name": { "type": "string" },
-                                "classtype": { "type": "string", "example": "ENTITYDOESNOTEXISTSERROR" }
+                            "date": { "type": "string", "format": "date-time" },
+                            "links": {
+                            "$ref": "#/components/schemas/PaginationLinks"
                             }
-                            },
-                            "date": { "type": "string", "format": "date-time" }
-                        }
-                        }
-                    }
-                    }
-                },
-                "500": {
-                    "description": "Internal server error",
-                    "content": {
-                    "application/json": {
-                        "schema": {
-                        "type": "object",
-                        "properties": {
-                            "status": { "type": "integer", "example": 500 },
-                            "params": {
-                            "type": "object",
-                            "properties": {
-                                "query": { "type": "string" },
-                                "type": { "type": "string" },
-                                "minValue": { "type": "number", "format": "float" },
-                                "maxValue": { "type": "number", "format": "float" },
-                                "page": { "type": "integer" },
-                                "pageSize": { "type": "integer" }
-                            }
-                            },
-                            "error": {
-                            "type": "object",
-                            "properties": {
-                                "message": { "type": "string" },
-                                "name": { "type": "string" },
-                                "classtype": { "type": "string", "example": "INTERNAL_SERVER_ERROR" },
-                                "class": { "type": "string" }
-                            }
-                            },
-                            "date": { "type": "string", "format": "date-time" }
                         }
                         }
                     }
                     }
                 }
-            }},
+                }
+            },
             "delete": {
                 "tags": ["Account"],
                 "summary": "Delete an account by ID",
@@ -1247,7 +1197,8 @@ export const swaggerOptions:OpenAPIObject = {
                             "description": "Title of the transaction"
                             },
                             "type": {
-                            "type": "string",
+                            "type": "enum",
+                            "examples":["income","outcome"],
                             "description": "Transaction type (e.g., income, expense)"
                             },
                             "value": {
@@ -1790,8 +1741,16 @@ export const swaggerOptions:OpenAPIObject = {
                         "type": "object",
                         "properties": {
                         "status": { "type": "integer", "example": 201 },
-                        "data": { "type": "object" },
-                        "body": { "type": "object" },
+                        "data": { "type": "object", "properties":{
+                            "icon": {"type":"string","example":"Home"},
+                            "title": {"type":"string","example":"Home"},
+                            "id": {"type":"string","example":"dcba7160-a7f1-424f-a913-ec877764f32b"} 
+                        } },
+                        "body": { "type": "object", "properties":{
+                            "name": {"type":"string","example":"Home"},
+                            "iconId": {"type":"string","example":"Home"},
+                            "isCustom": {"type":"boolean","example":false}
+                        } },
                         "date": { "type": "string", "format": "date-time" }
                         }
                     }
@@ -2299,7 +2258,48 @@ export const swaggerOptions:OpenAPIObject = {
           "updatedAt": { "type": "string", "format": "date-time" }
         }
       },
-
+      "AccountWithResume": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string", "format": "uuid" },
+          "title": { "type": "string" },
+          "type": { "type": "string" },
+          "description": { "type": "string",},
+          "userId": { "type": "string", "format": "uuid" },
+          "value": { "type": "number" },
+          "resume": {
+            "type": "object",
+            "properties": {
+              "income": { "type": "number" },
+              "outcome": { "type": "number" },
+              "per_income": { "type": "number",  },
+              "per_outcome": { "type": "number",  },
+              "transactions": { "type": "integer" }
+            }
+          }
+        }
+      },
+      "Transaction": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string", "format": "uuid" },
+          "title": { "type": "string" },
+          "value": { "type": "number" },
+          "type": { "type": "string", "enum": ["income", "outcome"] },
+          "createdAt": { "type": "string", "format": "date-time" },
+          "accountId": { "type": "string", "format": "uuid" },
+          "categoryId": { "type": "string", "format": "uuid" }
+        }
+      },
+      "PaginationLinks": {
+        "type": "object",
+        "properties": {
+          "first": { "type": "string", "format": "uri" },
+          "last": { "type": "string", "format": "uri" },
+          "next": { "type": "string", "format": "uri" },
+          "prev": { "type": "string", "format": "uri" }
+        }
+      }
     }
   }
 }
