@@ -2187,6 +2187,270 @@ export const swaggerOptions:OpenAPIObject = {
                 }
                 }
             }
+        },
+        "/auth/email": {
+            "post": {
+                "summary": "Enviar email de recuperação",
+                "description": "Envia um email de recuperação para o usuário autenticado. O email é obtido do perfil do usuário.",
+                "tags": ["Auth"],
+                "operationId": "sendRecoveryEmail",
+                "security": [
+                {
+                    "bearerAuth": []
+                }
+                ],
+                "responses": {
+                "200": {
+                    "description": "Email enviado com sucesso",
+                    "content": {
+                    "application/json": {
+                        "schema": {
+                        "type": "object",
+                        "properties": {
+                            "status": {
+                            "type": "integer",
+                            "example": 200
+                            },
+                            "params": {
+                            "type": "object",
+                            "properties": {
+                                "email": {
+                                "type": "string",
+                                "format": "email",
+                                "example": "usuario@email.com"
+                                }
+                            }
+                            },
+                            "data": {
+                            "type": "object",
+                            "properties": {
+                                "codeString": {
+                                "type": "string",
+                                "description": "Código de recuperação enviado por email"
+                                }
+                            }
+                            },
+                            "date": {
+                            "type": "string",
+                            "format": "date-time"
+                            }
+                        }
+                        }
+                    }
+                    }
+                },
+                "550": {
+                    "description": "Erro ao enviar o email (mailbox rejeitada ou insegura)",
+                    "content": {
+                    "application/json": {
+                        "schema": {
+                        "type": "object",
+                        "properties": {
+                            "status": {
+                            "type": "integer",
+                            "example": 550
+                            },
+                            "Description": {
+                            "type": "string",
+                            "example": "Message not taken or rejected. Issue in nodemailer execution likely means that the mailbox is unsafe or unusable"
+                            },
+                            "error": {
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                "type": "string"
+                                },
+                                "name": {
+                                "type": "string"
+                                },
+                                "class": {
+                                "type": "string"
+                                },
+                                "classType": {
+                                "type": "string",
+                                "example": "COULDNOTSENDEMAILERROR"
+                                }
+                            }
+                            },
+                            "date": {
+                            "type": "string",
+                            "format": "date-time"
+                            }
+                        }
+                        }
+                    }
+                    }
+                },
+                "500": {
+                    "description": "Erro interno no servidor",
+                    "content": {
+                    "application/json": {
+                        "schema": {
+                        "$ref": "#/components/schemas/ErrorInternal"
+                        }
+                    }
+                    }
+                }
+                }
+            },
+            "put": {
+                "summary": "Atualizar senha via recuperação por email",
+                "description": "Atualiza a senha do usuário com base em uma string de recuperação, um passaporte (identificador) e a nova senha. Essa operação é usada após o envio de um email de recuperação.",
+                "tags": ["Auth"],
+                "operationId": "updateUserPassword",
+                "requestBody": {
+                "required": true,
+                "content": {
+                    "application/json": {
+                    "schema": {
+                        "type": "object",
+                        "required": ["refString", "passport", "newPassword"],
+                        "properties": {
+                        "refString": {
+                            "type": "string",
+                            "example": "recovery-code-abc123"
+                        },
+                        "passport": {
+                            "type": "string",
+                            "example": "user@email.com"
+                        },
+                        "newPassword": {
+                            "type": "string",
+                            "example": "novasenhaSegura@123"
+                        }
+                        }
+                    }
+                    }
+                }
+                },
+                "responses": {
+                "200": {
+                    "description": "Senha atualizada com sucesso",
+                    "content": {
+                    "application/json": {
+                        "schema": {
+                        "type": "object",
+                        "properties": {
+                            "status": {
+                            "type": "integer",
+                            "example": 200
+                            },
+                            "params": {
+                            "type": "object",
+                            "properties": {
+                                "refString": {
+                                "type": "string"
+                                },
+                                "passport": {
+                                "type": "string"
+                                },
+                                "newPassword": {
+                                "type": "string"
+                                }
+                            }
+                            },
+                            "data": {
+                            "type": "object",
+                            "description": "Resposta retornada após atualização",
+                            "example": {
+                                "userId": "clx5...",
+                                "message": "Senha atualizada com sucesso"
+                            }
+                            },
+                            "date": {
+                            "type": "string",
+                            "format": "date-time"
+                            }
+                        }
+                        }
+                    }
+                    }
+                },
+                "400": {
+                    "description": "Informações fornecidas são inválidas",
+                    "content": {
+                    "application/json": {
+                        "schema": {
+                        "type": "object",
+                        "properties": {
+                            "status": {
+                            "type": "integer",
+                            "example": 400
+                            },
+                            "body": {
+                            "type": "object",
+                            "properties": {
+                                "refString": { "type": "string" },
+                                "passport": { "type": "string" },
+                                "newPassword": { "type": "string" }
+                            }
+                            },
+                            "error": {
+                            "type": "object",
+                            "properties": {
+                                "message": { "type": "string" },
+                                "name": { "type": "string" },
+                                "classtype": {
+                                "type": "string",
+                                "example": "INVALIDINFORMATIONPROVIDED"
+                                }
+                            }
+                            },
+                            "date": {
+                            "type": "string",
+                            "format": "date-time"
+                            }
+                        }
+                        }
+                    }
+                    }
+                },
+                "404": {
+                    "description": "Referência de recuperação não encontrada",
+                    "content": {
+                    "application/json": {
+                        "schema": {
+                        "type": "object",
+                        "properties": {
+                            "status": {
+                            "type": "integer",
+                            "example": 404
+                            },
+                            "body": {
+                            "type": "object"
+                            },
+                            "error": {
+                            "type": "object",
+                            "properties": {
+                                "message": { "type": "string" },
+                                "name": { "type": "string" },
+                                "classtype": {
+                                "type": "string",
+                                "example": "ENTITYDOESNOTEXISTSERROR"
+                                }
+                            }
+                            },
+                            "date": {
+                            "type": "string",
+                            "format": "date-time"
+                            }
+                        }
+                        }
+                    }
+                    }
+                },
+                "500": {
+                    "description": "Erro interno ao atualizar a senha",
+                    "content": {
+                    "application/json": {
+                        "schema": {
+                        "$ref": "#/components/schemas/ErrorInternal"
+                        }
+                    }
+                    }
+                }
+                }
+            }
         }
     },
     "components": {

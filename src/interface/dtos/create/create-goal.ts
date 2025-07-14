@@ -6,7 +6,7 @@ export class createGoalBody {
 
 
     @IsNotEmpty()   
-    targetDate: Date;
+    targetDate: string;
 
     currentValue?: number;
 

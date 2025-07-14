@@ -13,7 +13,7 @@ export class goalController {
     ){
 
     }
-
+    
     @UseGuards(AuthGuard)
     @Post("")
     async createGoal(@Body() body:createGoalBody,@Req() req){
@@ -24,7 +24,7 @@ export class goalController {
             const goal = await this.goalService.create(userId,{
                 title,
                 currentValue,
-                dueDate,
+                dueDate:new Date(dueDate),
                 targetValue:targetValue
             })
 
@@ -62,10 +62,9 @@ export class goalController {
                         class:String(err)
                     },
                     date:new Date()
-                },HttpStatus.NOT_FOUND)
+                },HttpStatus.INTERNAL_SERVER_ERROR)
             }
         }
-
     }
 
     @Delete("/:id")

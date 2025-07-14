@@ -6,6 +6,8 @@ import { prismaUserRepository } from "src/repositories/prismaRepository/prismaUs
 import { userRepository } from "src/repositories/user.repository";
 import { authService } from "src/services/auth/auth.service";
 import { AuthGuard } from "./auth.guard";
+import { mailService } from "src/services/auth/mail.service";
+import { userService } from "src/services/user/user.service";
 
 const secretK = "TOTALYSAFEANDSECUREJWTKEY"
 
@@ -23,9 +25,11 @@ const secretK = "TOTALYSAFEANDSECUREJWTKEY"
           useClass:prismaUserRepository
         },
         PrismaService,
-        AuthGuard
+        AuthGuard,
+        mailService,
+        userService
   ],
   controllers: [AuthController],
-  exports: [authService],
+  exports: [authService,mailService],
 })
 export class AuthModule {}
