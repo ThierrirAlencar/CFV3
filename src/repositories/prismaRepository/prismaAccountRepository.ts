@@ -1,10 +1,11 @@
 import { Injectable } from "@nestjs/common";
 import { accountRepository } from "../account.repository";
 import { PrismaService } from "src/database/prisma.service";
-import { Account, Prisma } from "generated/prisma";
+
 import { defaultAccount } from "src/interface/deafultAccount";
 import { retry } from "rxjs";
 import { accounQuery } from "src/interface/account-query";
+import { Account, Prisma } from "@prisma/client";
 
 
 @Injectable()

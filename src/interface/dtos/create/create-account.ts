@@ -1,5 +1,6 @@
+import { AccountType } from "@prisma/client";
 import { IsNotEmpty } from "class-validator";
-import { AccountType } from "generated/prisma";
+
 
 export class createAccountBody{
 

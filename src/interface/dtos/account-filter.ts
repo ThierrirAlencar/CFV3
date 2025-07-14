@@ -1,6 +1,7 @@
+import { AccountType } from "@prisma/client";
 import { Type } from "class-transformer";
 import { IsEnum, IsInt, IsOptional, IsString } from "class-validator";
-import { AccountType } from "generated/prisma";
+
 
 export class AccountFilterParams {
   @IsInt()

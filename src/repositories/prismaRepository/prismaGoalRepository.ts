@@ -1,7 +1,8 @@
 import { PrismaService } from "src/database/prisma.service";
 import { goalsRepository } from "../goal.repository";
-import { Goal, Prisma } from "generated/prisma";
+
 import { defaultGoal, queryGoal } from "src/interface/defaultGoal";
+import { Goal, Prisma } from "@prisma/client";
 
 export class PrismaGoalRepository implements goalsRepository{
     constructor( private prisma:PrismaService){}

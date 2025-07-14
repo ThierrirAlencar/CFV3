@@ -1,8 +1,9 @@
-import { Category, Prisma } from "generated/prisma";
+
 import { DefaultCategory } from "src/interface/defaultCategory";
 import { categoryRepository } from "../category.repository";
 import { PrismaService } from "src/database/prisma.service";
 import { Inject, Injectable } from "@nestjs/common";
+import { Category, Prisma } from "@prisma/client";
 
 @Injectable()
 export class PrismaCategoryRepository implements categoryRepository{

@@ -1,5 +1,6 @@
+import { Type } from "@prisma/client"
 import { IsNotEmpty } from "class-validator"
-import { Type } from "generated/prisma"
+
 
 export class createTransactionBody{
     @IsNotEmpty()

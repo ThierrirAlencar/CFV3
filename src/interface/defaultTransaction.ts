@@ -1,4 +1,5 @@
-import { Type } from "generated/prisma/client";
+import { Type } from "@prisma/client";
+
 
 export interface defaultTransaction {
     title:string;

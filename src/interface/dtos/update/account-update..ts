@@ -1,6 +1,7 @@
+import { AccountType } from "@prisma/client";
 import { Type } from "class-transformer";
 import { IsEmpty, IsNotEmpty } from "class-validator";
-import { AccountType } from "generated/prisma";
+
 
 export class accountUpdateBody{
     @IsEmpty()
