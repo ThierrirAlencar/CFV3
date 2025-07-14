@@ -1,4 +1,5 @@
-import { Account, Prisma, Transaction, User } from "generated/prisma";
+
+import { Prisma, Transaction } from "@prisma/client";
 import { accounQuery } from "src/interface/account-query";
 import { defaultTransaction, queryTransaction } from "src/interface/defaultTransaction";
 

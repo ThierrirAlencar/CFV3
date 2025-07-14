@@ -1,4 +1,5 @@
-import { Category, Prisma } from "generated/prisma";
+
+import { Category, Prisma } from "@prisma/client";
 import { DefaultCategory } from "src/interface/defaultCategory";
 
 export abstract class categoryRepository {

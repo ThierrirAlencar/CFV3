@@ -1,8 +1,9 @@
-import { Prisma, Transaction } from "generated/prisma";
+
 import { defaultTransaction, queryTransaction } from "src/interface/defaultTransaction";
 import { transactionRepository } from "../transaction.repository";
 import { Inject, Injectable } from "@nestjs/common";
 import { PrismaService } from "src/database/prisma.service";
+import { Prisma, Transaction } from "@prisma/client";
 
 @Injectable()
 export class PrismaTransactionRepository implements transactionRepository {

@@ -1,4 +1,5 @@
-import { Goal, Prisma } from "generated/prisma";
+
+import { Goal, Prisma } from "@prisma/client";
 import { defaultGoal, queryGoal } from "src/interface/defaultGoal";
 
 export abstract class goalsRepository{

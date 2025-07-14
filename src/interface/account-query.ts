@@ -1,4 +1,5 @@
-import { AccountType } from "generated/prisma";
+import { AccountType } from "@prisma/client";
+
 
 export interface accounQuery{
     query?: string;

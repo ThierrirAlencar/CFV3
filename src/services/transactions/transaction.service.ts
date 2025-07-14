@@ -1,5 +1,5 @@
 import { Injectable } from "@nestjs/common";
-import { Account, Prisma, Transaction, Type } from "generated/prisma";
+import { Account, Prisma, Transaction, Type } from "@prisma/client";
 import { EntityDoesNotExistsError } from "src/errors/entityDoesNotExists.error";
 import { defaultTransaction } from "src/interface/defaultTransaction";
 import { accountRepository } from "src/repositories/account.repository";
