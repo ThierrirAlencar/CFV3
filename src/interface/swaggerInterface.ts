@@ -1579,134 +1579,229 @@ export const swaggerOptions:OpenAPIObject = {
                 }
              },
              "get": {
-                "tags": ["Transactions"],
+                "tags": ["Transaction"],
                 "summary": "List transactions with filters",
-                "description": "Returns a filtered and paginated list of transactions. Filters include account, category, date range, title, type, and value limits.",
-                "operationId": "findManyByFilter",
+                "description": "Retrieves transactions for the authenticated user, with optional filters and pagination. Requires a bearer token.",
+                "operationId": "listTransactions",
+                "security": [
+                {
+                    "bearerAuth": []
+                }
+                ],
                 "parameters": [
-                    { "name": "accountId", "in": "query", "required": true, "schema": { "type": "string" } },
-                    { "name": "categoryId", "in": "query", "schema": { "type": "string" } },
-                    { "name": "title", "in": "query", "schema": { "type": "string" } },
-                    { "name": "type", "in": "query", "schema": { "type": "string" } },
-                    { "name": "createdAfter", "in": "query", "schema": { "type": "string", "format": "date-time" } },
-                    { "name": "createdBefore", "in": "query", "schema": { "type": "string", "format": "date-time" } },
-                    { "name": "minValue", "in": "query", "schema": { "type": "number", "format": "float" } },
-                    { "name": "maxValue", "in": "query", "schema": { "type": "number", "format": "float" } },
-                    { "name": "page", "in": "query", "schema": { "type": "integer", "default": 1 } },
-                    { "name": "pageSize", "in": "query", "schema": { "type": "integer", "default": 10 } }
+                {
+                    "name": "accountId",
+                    "in": "query",
+                    "description": "Filter transactions by account ID",
+                    "required": false,
+                    "schema": { "type": "string", "format": "uuid" }
+                },
+                {
+                    "name": "categoryId",
+                    "in": "query",
+                    "description": "Filter transactions by category ID",
+                    "required": false,
+                    "schema": { "type": "string", "format": "uuid" }
+                },
+                {
+                    "name": "createdAfter",
+                    "in": "query",
+                    "description": "Filter transactions created after this date",
+                    "required": false,
+                    "schema": { "type": "string", "format": "date-time" }
+                },
+                {
+                    "name": "createdBefore",
+                    "in": "query",
+                    "description": "Filter transactions created before this date",
+                    "required": false,
+                    "schema": { "type": "string", "format": "date-time" }
+                },
+                {
+                    "name": "minValue",
+                    "in": "query",
+                    "description": "Minimum transaction value",
+                    "required": false,
+                    "schema": { "type": "number", "format": "float" }
+                },
+                {
+                    "name": "maxValue",
+                    "in": "query",
+                    "description": "Maximum transaction value",
+                    "required": false,
+                    "schema": { "type": "number", "format": "float" }
+                },
+                {
+                    "name": "title",
+                    "in": "query",
+                    "description": "Filter by title",
+                    "required": false,
+                    "schema": { "type": "string" }
+                },
+                {
+                    "name": "type",
+                    "in": "query",
+                    "description": "Transaction type (income or outcome)",
+                    "required": false,
+                    "schema": { "type": "string", "enum": ["income", "outcome"] }
+                },
+                {
+                    "name": "page",
+                    "in": "query",
+                    "description": "Page number for pagination",
+                    "required": false,
+                    "schema": { "type": "integer", "minimum": 1 }
+                },
+                {
+                    "name": "pageSize",
+                    "in": "query",
+                    "description": "Number of results per page",
+                    "required": false,
+                    "schema": { "type": "integer", "minimum": 1 }
+                }
                 ],
                 "responses": {
-                    "200": {
-                    "description": "Filtered transaction list retrieved successfully",
+                "200": {
+                    "description": "Transactions retrieved successfully",
                     "content": {
-                        "application/json": {
+                    "application/json": {
                         "schema": {
-                            "type": "object",
-                            "properties": {
+                        "type": "object",
+                        "properties": {
                             "status": { "type": "integer", "example": 200 },
                             "data": {
+                            "type": "object",
+                            "properties": {
+                                "transactions": {
                                 "type": "array",
                                 "items": {
+                                    "type": "object",
+                                    "properties": {
+                                    "id": { "type": "string", "format": "uuid" },
+                                    "title": { "type": "string" },
+                                    "value": { "type": "number", "format": "float" },
+                                    "type": { "type": "string", "enum": ["income", "outcome"] },
+                                    "createdAt": { "type": "string", "format": "date-time" },
+                                    "accountId": { "type": "string", "format": "uuid" },
+                                    "categoryId": { "type": "string", "format": "uuid" }
+                                    }
+                                }
+                                },
+                                "resume": {
                                 "type": "object",
                                 "properties": {
-                                    "id": { "type": "string" },
-                                    "accountId": { "type": "string" },
-                                    "categoryId": { "type": "string" },
-                                    "title": { "type": "string" },
-                                    "type": { "type": "string" },
-                                    "value": { "type": "number", "format": "float" },
-                                    "createdAt": { "type": "string", "format": "date-time" }
+                                    "percent": {
+                                    "type": "object",
+                                    "properties": {
+                                        "income": { "type": "number" },
+                                        "outcome": { "type": "number" }
+                                    }
+                                    },
+                                    "total": {
+                                    "type": "object",
+                                    "properties": {
+                                        "income": { "type": "number" },
+                                        "outcome": { "type": "number" },
+                                        "value": { "type": "number" }
+                                    }
+                                    }
                                 }
                                 }
+                            }
                             },
                             "meta": {
-                                "type": "object",
-                                "properties": {
+                            "type": "object",
+                            "properties": {
                                 "maxPage": { "type": "integer" },
                                 "page": { "type": "integer" },
                                 "pageSize": { "type": "integer" },
                                 "totalCount": { "type": "integer" },
                                 "links": {
-                                    "type": "object",
-                                    "properties": {
+                                "type": "object",
+                                "properties": {
                                     "first": { "type": "string", "format": "uri" },
                                     "last": { "type": "string", "format": "uri" },
-                                    "next": { "type": "string","format": "uri" },
-                                    "prev": { "type": "string", "format": "uri" }
-                                    }
+                                    "next": { "type": "string", "format": "uri", "nullable": true },
+                                    "prev": { "type": "string", "format": "uri", "nullable": true }
                                 }
                                 }
+                            }
                             },
-                            "date": { "type": "string", "format": "date-time" },
                             "links": {
-                                "type": "object",
-                                "properties": {
+                            "type": "object",
+                            "properties": {
                                 "first": { "type": "string", "format": "uri" },
                                 "last": { "type": "string", "format": "uri" },
-                                "next": { "type": "string", "format": "uri" },
-                                "prev": { "type": "string", "format": "uri" }
-                                }
+                                "next": { "type": "string", "format": "uri", "nullable": true },
+                                "prev": { "type": "string", "format": "uri", "nullable": true }
+                            }
                             },
+                            "date": { "type": "string", "format": "date-time" },
                             "body": {
-                                "type": "object",
-                                "description": "Query params received"
+                            "type": "object",
+                            "properties": {
+                                "accountId": { "type": "string" },
+                                "categoryId": { "type": "string" },
+                                "createdAfter": { "type": "string", "format": "date-time" },
+                                "createdBefore": { "type": "string", "format": "date-time" },
+                                "maxValue": { "type": "number" },
+                                "minValue": { "type": "number" },
+                                "page": { "type": "string" },
+                                "pageSize": { "type": "string" },
+                                "title": { "type": "string" },
+                                "type": { "type": "string", "enum": ["income", "outcome"] }
                             }
                             }
                         }
                         }
                     }
-                    },
-                    "404": {
-                    "description": "No transactions found for given filters",
+                    }
+                },
+                "404": {
+                    "description": "Entity not found",
                     "content": {
-                        "application/json": {
+                    "application/json": {
                         "schema": {
-                            "type": "object",
-                            "properties": {
+                        "type": "object",
+                        "properties": {
                             "status": { "type": "integer", "example": 404 },
                             "error": {
-                                "type": "object",
-                                "properties": {
-                                "message": { "type": "string" },
-                                "name": { "type": "string" },
-                                "classtype": {
-                                    "type": "string",
-                                    "example": "ENTITYDOESNOTEXISTSERROR"
-                                }
-                                }
-                            },
-                            "date": { "type": "string", "format": "date-time" }
-                            }
-                        }
-                        }
-                    }
-                    },
-                    "500": {
-                    "description": "Internal server error",
-                    "content": {
-                        "application/json": {
-                        "schema": {
                             "type": "object",
                             "properties": {
-                            "status": { "type": "integer", "example": 500 },
-                            "error": {
-                                "type": "object",
-                                "properties": {
                                 "message": { "type": "string" },
                                 "name": { "type": "string" },
-                                "classtype": {
-                                    "type": "string",
-                                    "example": "INTERNAL_SERVER_ERROR"
-                                },
-                                "class": { "type": "string" }
-                                }
+                                "classtype": { "type": "string", "example": "ENTITYDOESNOTEXISTSERROR" }
+                            }
                             },
                             "date": { "type": "string", "format": "date-time" }
+                        }
+                        }
+                    }
+                    }
+                },
+                "500": {
+                    "description": "Internal server error",
+                    "content": {
+                    "application/json": {
+                        "schema": {
+                        "type": "object",
+                        "properties": {
+                            "status": { "type": "integer", "example": 500 },
+                            "error": {
+                            "type": "object",
+                            "properties": {
+                                "message": { "type": "string" },
+                                "name": { "type": "string" },
+                                "classtype": { "type": "string", "example": "INTERNAL_SERVER_ERROR" },
+                                "class": { "type": "string" }
                             }
+                            },
+                            "date": { "type": "string", "format": "date-time" }
                         }
                         }
                     }
                     }
+                }
                 }
              }
         },
