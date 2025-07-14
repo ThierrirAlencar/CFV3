@@ -1,5 +1,5 @@
 import { Body, Controller, Delete, Get, HttpException, HttpStatus, Param, Post, Put } from "@nestjs/common";
-import { createCategoryBody } from "src/interface/dtos/create-category";
+import { createCategoryBody } from "src/interface/dtos/create/create-category";
 import { categoryService } from "src/services/category/category.service";
 
 @Controller("category")
@@ -12,10 +12,10 @@ export class CategoryController {
     @Post("")
     async createCategory(@Body() createCategoryDto:createCategoryBody){
         const { name, iconId, isCustom } = createCategoryDto;
-
+        console.log("hi")
         try{
             const data = await this.categoryService.createCategory(name, iconId, isCustom);
-            
+            console.log(data)
             return {
                 status:HttpStatus.CREATED,
                 data,
@@ -23,10 +23,12 @@ export class CategoryController {
                 date:new Date().toISOString()
             }
         }catch(err){
+            console.log(err)
             throw new HttpException({
                 status: HttpStatus.INTERNAL_SERVER_ERROR,
                 error: "Failed to create category",
-                message: err.message
+                message: err.message,
+                ep:err
             },HttpStatus.INTERNAL_SERVER_ERROR)
         }
     }

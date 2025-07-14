@@ -1,6 +1,6 @@
 import { Body, Controller, Delete, Get, HttpException, HttpStatus, Post, Request, UseGuards } from '@nestjs/common';
 import { ApiBody } from '@nestjs/swagger';
-import { CreateUserBody } from 'src/interface/dtos/create-user';
+import { CreateUserBody } from 'src/interface/dtos/create/create-user';
 import { EntityAlreadyExists } from 'src/errors/entityAlreadyExists.error';
 import { EntityDoesNotExistsError } from 'src/errors/entityDoesNotExists.error';
 import { AuthGuard } from 'src/modules/auth/auth.guard';

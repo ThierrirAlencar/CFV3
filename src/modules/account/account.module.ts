@@ -3,7 +3,9 @@ import { AccountController } from "src/controllers/account.controller";
 import { PrismaService } from "src/database/prisma.service";
 import { accountRepository } from "src/repositories/account.repository";
 import { prismaAccountRepository } from "src/repositories/prismaRepository/prismaAccountRepository";
+import { PrismaTransactionRepository } from "src/repositories/prismaRepository/prismaTransactionRepository";
 import { prismaUserRepository } from "src/repositories/prismaRepository/prismaUserRepository";
+import { transactionRepository } from "src/repositories/transaction.repository";
 import { userRepository } from "src/repositories/user.repository";
 import { accountService } from "src/services/accounts/account.service";
 
@@ -19,6 +21,10 @@ import { accountService } from "src/services/accounts/account.service";
     {
         provide: userRepository,
         useClass: prismaUserRepository
+    },
+    {
+        provide: transactionRepository,
+        useClass:PrismaTransactionRepository
     },
     accountService,PrismaService
   ],

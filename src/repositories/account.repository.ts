@@ -10,7 +10,7 @@ export abstract class accountRepository{
 
     abstract findOneById(id:string):Promise<Account | null>;
 
-    abstract findManyByFilter(query:accounQuery,uid:string,config:{page:number,pageSize:number}):Promise<Account[]>;
+    abstract findManyByFilter(query:accounQuery,uid:string,config:{page:number,pageSize:number}):Promise<{paginated:Account[],total:Account[]}>;
 
     abstract findManyByUserl(uid:string):Promise<Account[]>;
 
