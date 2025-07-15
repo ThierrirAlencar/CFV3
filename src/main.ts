@@ -10,6 +10,12 @@ async function bootstrap() {
 
   const app = await NestFactory.create(AppModule);
 
+  //Cors Pollicy
+  app.enableCors({
+    origin: '*',
+    methods: 'GET,POST,PUT,DELETE,PATCH',
+    credentials: true,
+  });
 
   //Swagger and OpenAPI automatic documentation
 
